@@ -24,5 +24,5 @@ app.use('/doc',documentRoutes)
 app.get('/',(req,res)=>{
     res.send('Docket Management system')
 })
-
-app.listen(4000,()=> console.log("server is running"))
+const port = process.env.PORT || 4000
+app.listen(port,()=> console.log("server is running"))
