@@ -6,7 +6,17 @@ const Image =require("../models/image.js");
 module.exports.getDocument = async (req, res) => {
   const { user_id } = req.params;
   try {
-    const user = await User.findById( user_id ).populate("document");
+    const user = await User.findById( user_id ).populate("document").populate("received");
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).send("Internal Server error");
+  }
+};
+
+module.exports.getShared = async (req, res) => {
+  const { user_id } = req.params;
+  try {
+    const user = await User.findById( user_id ).populate("received");
     res.status(200).json(user);
   } catch (err) {
     res.status(500).send("Internal Server error");
@@ -16,6 +26,7 @@ module.exports.getDocument = async (req, res) => {
 module.exports.addDocument = async (req, res) => {
   try {
     const { user_id } = req.params;
+    console.log(req.body)
     const document = new Document({ ...req.body });
     const user = await User.findById(user_id);
     user.document.push(document._id);
@@ -145,3 +156,29 @@ module.exports.editDoc = async(req,res) =>{
   }
 }
 
+module.exports.deleteImage = async(req,res)=>{
+  try{
+    const {image_id,sub_id,doc_id}=req.params
+    console.log(image_id,sub_id,doc_id)
+    const subdoc= await SubDocument.findById(sub_id)
+    await subdoc.image.pop(sub_id)
+    await Image.deleteOne({_id:image_id})
+    const Doc=await Document.findById(doc_id).populate('subDocument')
+    res.status(200).json(Doc)
+  }catch(err){
+    res.status(500).json({msg: "Internal Server Error"}) 
+  }
+}
+
+module.exports.sharedoc = async(req,res)=>{
+  try{
+    const {doc_id}=req.params
+    const {email}=req.body
+    const  to = await User.findOne({email}) 
+    await to.received.push(doc_id)
+    await to.save()
+    res.status(200).json({msg:"success"})
+  }catch(err){
+    res.status(500).json({msg: "Internal Server Error"}) 
+  }
+}

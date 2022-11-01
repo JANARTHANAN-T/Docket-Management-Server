@@ -7,7 +7,8 @@ const documentSchema=new Schema({
     subDocument:[{
         type:Schema.Types.ObjectId,
         ref:'SubDocument'
-    }]
+    }],
+    owner:String
 })
 
 module.exports=mongoose.model("Document",documentSchema);

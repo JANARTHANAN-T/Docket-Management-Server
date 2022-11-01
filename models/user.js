@@ -16,6 +16,10 @@ const userSchema = new Schema({
   document:[{
     type:Schema.Types.ObjectId,
     ref:'Document'
+}],
+received:[{
+  type:Schema.Types.ObjectId,
+  ref:'Document'
 }]
   
 });
