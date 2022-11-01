@@ -182,3 +182,15 @@ module.exports.sharedoc = async(req,res)=>{
     res.status(500).json({msg: "Internal Server Error"}) 
   }
 }
+
+module.exports.removeReceived = async(req,res)=>{
+  try{
+    const {user_id,doc_id}= req.params
+    const user = await User.findById(user_id)
+    await user.received.pop(doc_id)
+    await user.save()
+    res.status(200).json({msg:"success"})
+  }catch(err){
+    res.status(500).json({msg: "Internal Server Error"}) 
+  }
+}
