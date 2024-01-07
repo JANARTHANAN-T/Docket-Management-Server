@@ -11,7 +11,7 @@ const cors=require("cors")
 const userRoutes = require('./routes/user.js')
 const documentRoutes= require('./routes/document.js')
 
-const DATABASE_URL = 'mongodb+srv://Dhanushya:dhanu@documentmanagement.9iqf5uq.mongodb.net/?retryWrites=true&w=majority'
+const DATABASE_URL = 'mongodb+srv://dhanushya:Dhanu@cluster0.polbmhe.mongodb.net/?retryWrites=true&w=majority'
 mongoose.connect(DATABASE_URL,{useNewUrlParser:true,useUnifiedTopology:true})
 .then( () => {
     console.log("Connection open")

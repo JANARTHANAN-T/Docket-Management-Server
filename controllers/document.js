@@ -173,8 +173,8 @@ module.exports.deleteImage = async(req,res)=>{
 module.exports.sharedoc = async(req,res)=>{
   try{
     const {doc_id}=req.params
-    const {email}=req.body
-    const  to = await User.findOne({email}) 
+    const {name}=req.body
+    const  to = await User.findOne({name}) 
     await to.received.push(doc_id)
     await to.save()
     res.status(200).json({msg:"success"})

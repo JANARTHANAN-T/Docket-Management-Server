@@ -3,14 +3,14 @@ const bcrypt = require('bcryptjs')
 const User=  require('../models/user.js')
  
 module.exports.signUp = async(req,res)=>{
-    const {name,email,type,mobile,password} = req.body
+    const {name,firstName,lastName,email,type,mobile,password} = req.body
     try {
         const existinguser=await User.findOne({email})
         if(existinguser){
             return res.status(400).json({message:'User already found..'})
         }
         const hashPassword = await bcrypt.hash(password,12);
-        const newUser=new User({name,email,type,mobile,password:hashPassword})
+        const newUser=new User({name,firstName,lastName,email,type,mobile,password:hashPassword})
         await newUser.save();
         const token = jwt.sign({email:newUser.email},'token',{expiresIn:'1h'})
         res.status(200).json({result:newUser,token})
